@@ -132,7 +132,7 @@ inclusive o Dockerfile vc executa
 docker stop matheus_node_c 
 
 ////// REMOVENDO 
-docker stop matheus_node_c 
+docker rm matheus_node_c 
 
 ////// BUILD 
 docker build -t matheus_node_i:_v1 . 
