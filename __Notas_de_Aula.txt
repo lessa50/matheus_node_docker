@@ -1,0 +1,141 @@
+LINK AULA:
+https://youtu.be/np_vyd7QlXk
+
+///////////////////////////////////////////////// 
+HOST e DISTRO
+///////////////////////////////////////////////// 
+Windows 11
+WSL2 - Ubuntu 24.04
+/////////////////////////////////////////////////
+PERMISSOES
+///////////////////////////////////////////////// acesso ide CURSOR:
+------------------------------------------------
+    sudo chmod -R 775 < pasta no linux do proj node >
+
+
+////////////////////// DOCKERFILE + PROJETO NODE 
+criei uma pasta matheus_node_docker
+entrei e fiz:
+                npm init -y (usei sem -y)
+                npm install express
+
+                //////////////////////////
+                --------------------------
+                cria arquivo da aplicacao:
+                --------------------------
+                index.js 
+                --------------------------
+
+                //////////////////////////
+                cria arquivo Docker:
+                --------------------------
+                Dockerfile 
+                --------------------------
+
+nao vamos precisar do node instalado
+so usamos ele para montar o package.json
+entao apagamos:
+                ///////////////////////////
+                ---------------------------
+                apagando pastas e arquivos:
+                ---------------------------
+                - node_modules
+                - package-lock.json
+                ---------------------------
+
+
+NA PASTA AGORA SO TEM 3 ARQUIVOS :
+..................................
+            - index.js 
+            - Dockerfile 
+            - package.json 
+
+
+
+
+..................................
+index.js    
+..................................
+
+const express = require('express');
+const app = express();
+const port = 3000;
+
+app.get('/', (req,res) => {
+    res.send('Rodando Node + express no Docker');
+});
+app.listen(port, () =>{
+    console.log("Servidor rodando na porta : " + port);
+});
+
+
+
+
+
+..................................
+Dockerfile
+..................................
+
+
+                        # importando um container basico padrao
+FROM node 
+                        # setando o diretorio de trabalho
+WORKDIR /usr/src/app
+
+                        # copiando o package.json para o WORKDIR
+                        # COPY package.json /usr/src/app
+                        # ou simplesmente coloca o ponto .
+COPY package.json .
+
+                        # instalando a aplicação
+RUN npm install
+
+                        # copiando todos os arquivos para o WORKDIR
+                        # copia tudo (.) para o workdir (.)
+COPY . .
+
+                        # expondo a porta da aplicação index.js
+EXPOSE 3000
+
+                        # comando de start da aplicação
+CMD ["node", "index.js"]
+
+
+
+..................................
+gerando a imagem do Dockerfile
+..................................
+dentro da pasta onde esta os arquivos 
+inclusive o Dockerfile vc executa
+
+////////////////////  CRIANDO IMAGEM : NOME + TAG
+
+    docker build -t matheus_node_i:_v1 .   
+                                    (ponto) nao esqueça
+
+
+////////////////////  CRIANDO CONTAINER : NOME
+
+    docker run -d --name matheus_node_c -p 3000:3000 matheus_node_i:_v1 
+
+
+
+
+
+///////////////////////////////////////////////
+////// ALTERACOES NO index.js
+///////////////////////////////////////////////
+//// qualquer mudança tem que buildar de novo
+///////////////////////////////////////////////
+
+////// PARANDO 
+docker stop matheus_node_c 
+
+////// REMOVENDO 
+docker stop matheus_node_c 
+
+////// BUILD 
+docker build -t matheus_node_i:_v1 . 
+
+////// RUN
+docker run -d --name matheus_node_c -p 3000:3000 matheus_node_i:_v1 
