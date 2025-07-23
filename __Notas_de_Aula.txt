@@ -139,3 +139,22 @@ docker build -t matheus_node_i:_v1 .
 
 ////// RUN
 docker run -d --name matheus_node_c -p 3000:3000 matheus_node_i:_v1 
+
+
+
+///////////////////////////// EXCLUIR CONTAINER 
+-------------- primeiro exclui o container
+docker rm matheus_node_c
+
+///////////////////////////// EXCLUIR IMAGEM 
+-------------- depois exclui a imagem
+docker rmi matheus_node_i:_v1
+
+
+///////////////////////////// APAGAR TUDO - PRUNE
+docker system prune 
+
+
+/////////////////////////////////////////////
+/////////////////////////// FIM DA AULA
+/////////////////////////////////////////////
